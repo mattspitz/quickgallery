@@ -49,7 +49,9 @@ class Job(object):
         image_fns = []
         for image_fn in sorted(image_files):
             basename = os.path.basename(image_fn)
-            image_fns.append( (os.path.join("_thumbnails", basename), os.path.join("_originals", basename)) )
+            image_fns.append( (basename,
+                               os.path.join("_thumbnails", basename),
+                               os.path.join("_originals", basename)) )
 
         template_args = {"thisdir": os.path.basename(self.srcdir) or os.path.basename(os.path.dirname(self.srcdir)),
                          "subdirectories": sorted([ os.path.basename(d) for d in subdirectories ]),
@@ -61,7 +63,7 @@ class Job(object):
         output_f.close()
 
     def run(self):
-        print "creating directory", self.targetdir, "from directory", self.srcdir
+        print self.srcdir
 
         subdirectories, image_files = self.parse_srcdir()
 
@@ -80,7 +82,7 @@ class Job(object):
                 try:
                     im.thumbnail((self.thumb_width, self.thumb_width), Image.ANTIALIAS)
                 except Exception:
-                    print "error creating thumbnail for", ifile
+                    print "\t...error creating thumbnail for", ifile
 
                 im.save(os.path.join(thumbnail_dir, os.path.basename(ifile)))
 
