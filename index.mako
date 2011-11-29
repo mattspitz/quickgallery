@@ -8,24 +8,26 @@ body {
      font-family: Helvetica;
      font-weight: 300;
 }
-
 #links ul {
     list-style-type: square;
 }
 #links ul li {
     padding: 2px 0;
 }
-
 #images .imgwrapper {
     display: inline-block;
     text-align: center;
     padding: 8px 4px;
 }
-
 #images .img {
     width: ${thumb_width}px;
     padding-bottom: 4px;
 }
+#images .img img {
+    max-width: ${thumb_width}px;
+    max-height: ${thumb_width}px;
+}
+
 </style>
 </head>
 
