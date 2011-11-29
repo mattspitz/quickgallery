@@ -4,7 +4,7 @@ import Queue
 import sys
 
 from mako.template import Template
-from PIL import Image
+from PIL import ExifTags, Image
 
 def parse_args():
     parser = optparse.OptionParser()
@@ -80,6 +80,12 @@ class Job(object):
             for ifile in image_files:
                 im = Image.open(ifile)
                 try:
+                    exif=dict((ExifTags.TAGS.get(k), v) for k, v in im._getexif().items())
+                    rotation = {3: 180,
+                                6: 270,
+                                8: 90}.get(exif['Orientation'], 0)
+                    if rotation:
+                        im = im.rotate(rotation, expand=True)
                     im.thumbnail((self.thumb_width, self.thumb_width), Image.ANTIALIAS)
                 except Exception:
                     print "\t...error creating thumbnail for", ifile
