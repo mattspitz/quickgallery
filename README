@@ -1,0 +1,5 @@
+QuickGallery is a really simple way to create a web-browseable photo
+gallery, either locally or hosted on a website.  It'll auto-generate
+thumbnails for your images.
+
+Requires PIL.
