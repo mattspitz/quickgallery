@@ -3,3 +3,6 @@ gallery, either locally or hosted on a website.  It'll auto-generate
 thumbnails for your images.
 
 Requires PIL and Mako.
+
+Sample usage:
+./quickgallery.py /storage/visual/2011 -g /var/www/2011photos
