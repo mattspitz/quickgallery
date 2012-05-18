@@ -2,6 +2,7 @@ import optparse
 import os
 import Queue
 import sys
+import traceback
 
 from mako.template import Template
 from PIL import ExifTags, Image
@@ -78,17 +79,18 @@ class Job(object):
             thumbnail_dir = os.path.join(self.targetdir, "_thumbnails")
             os.mkdir(thumbnail_dir)
             for ifile in image_files:
-                im = Image.open(ifile)
                 try:
-                    exif=dict((ExifTags.TAGS.get(k), v) for k, v in im._getexif().items())
+                    im = Image.open(ifile)
+                    exif = dict((ExifTags.TAGS.get(k), v) for k, v in im._getexif().items())
                     rotation = {3: 180,
                                 6: 270,
-                                8: 90}.get(exif['Orientation'], 0)
+                                8: 90}.get(exif.get('Orientation'), 0)
                     if rotation:
                         im = im.rotate(rotation, expand=True)
                     im.thumbnail((self.thumb_width, self.thumb_width), Image.ANTIALIAS)
                 except Exception:
                     print "\t...error creating thumbnail for", ifile
+                    traceback.print_exc(5)
 
                 im.save(os.path.join(thumbnail_dir, os.path.basename(ifile)))
 
